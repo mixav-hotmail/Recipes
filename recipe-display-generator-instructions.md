@@ -29,7 +29,7 @@ The goal: one consistent, ADHD-friendly cooking companion.
     - `index.html` — full cookbook (all recipes); TOC recipe pills link to
       subpages; floating cart tab holds the consolidated 12-item shopping list
     - `tikka.html`, `shrimp.html`, `salmon.html`, `koobideh.html`, `cordon.html`,
-      `thighs.html`, `croque.html`, `coco.html` — per-recipe subpages (full
+      `thighs.html`, `croque.html`, `coco.html`, `croute.html` — per-recipe subpages (full
       chrome, one recipe section, no top nav; the cart shows only that
       recipe's items)
     - `assets/app.css`, `assets/app.js` — shared stylesheet/script extracted
@@ -57,7 +57,9 @@ The goal: one consistent, ADHD-friendly cooking companion.
   1–2 per call, code pages bundle ~7 per call). Pushes need one approval each;
   batch aggressively. Pages is already enabled (Deploy from a branch →
   `main`, `/(root)`); live at `https://mixav-hotmail.github.io/Recipes/`.
-  The user wants direct commits — never hand them a zip to upload.
+  The user wants direct commits — never hand them a zip to upload. Finish ALL
+  work locally first (build + verify green), then push the complete set —
+  every push to main triggers GitHub Actions.
 - After any template change: rebuild **both**, re-verify, push the changed files.
 
 ## 2. Recipe data model (`RECIPES`)
@@ -78,7 +80,7 @@ tikka: {
 
 - `chelow` is an ingredients-only entry (no player): `{ name, baseServ, ing }`.
 - Keep recipe order: tikka, shrimp, salmon, koobideh, cordon, thighs, croque,
-  coco. New recipes append after.
+  coco, croute. New recipes append after.
 
 ## 3. Ingredients
 
@@ -243,3 +245,7 @@ migration.
   side salad), chicken coconut curry (rice). Shared cart items: chicken breast
   (tikka/cordon/coco), turkey slices + Gruyère (cordon/croque), coconut milk
   (shrimp/coco), garlic (tikka/shrimp/salmon/thighs/coco), potatoes (cordon/thighs).
+- Oct 2026: Rice Paper Salmon en Croûte (from @shicocooks' reel — recipe pulled from
+  her site since the IG caption only links there). Base 4 servings (parcels don't keep
+  well). Shared cart items: salmon fillet (s2), eggs (s19), milk (s20), yogurt (s12);
+  new: rice paper, sesame seeds, ricotta, spinach, dill.
