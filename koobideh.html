@@ -24,6 +24,7 @@
     <a href="thighs.html">🍗 Roast Chicken Thighs</a>
     <a href="croque.html">🥪 Turkey Croque Monsieur</a>
     <a href="coco.html">🍛 Chicken Coconut Curry</a>
+    <a href="croute.html">🥟 Rice Paper Salmon en Croûte</a>
   </nav>
 </aside>
 
@@ -80,6 +81,8 @@
 
 
 
+
+
 <!-- data source for the floating cart (#cartFab); the visible shopping UI lives in the mini tab -->
 <section id="shopping" hidden>
   <h2>Shopping List</h2>
@@ -92,7 +95,7 @@
       <div class="tip">A 1 lb bag works too — just freeze the extra. Thaw in the fridge the night before.</div>
       <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
     </div>
-    <div class="item" data-id="s2" data-rs="salmon" data-r="salmon" data-name="Salmon fillets" data-note="2 fillets">
+    <div class="item" data-id="s2" data-rs="salmon,croute" data-r="salmon" data-name="Salmon fillets" data-note="2 fillets">
       <div class="row1"><span class="name">Salmon fillets</span><span class="qty">¾ lb (2 fillets)</span></div>
       <div class="tip">Buy frozen — freeze on arrival, move to the fridge the night before cooking.</div>
       <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
@@ -151,6 +154,17 @@
     </div>
   </div>
 
+    <div class="item" data-id="s26" data-rs="croute" data-r="croute" data-name="Fresh spinach" data-note="one bag">
+      <div class="row1"><span class="name">Fresh spinach</span><span class="qty">3 cups</span></div>
+      <div class="tip">You'll wilt it down — 90 g / about 3 cups fresh.</div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s27" data-rs="croute" data-r="croute" data-name="Fresh dill" data-note="for the dip">
+      <div class="row1"><span class="name">Fresh dill</span><span class="qty">1 bunch</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+  </div>
+
   <div class="group">
     <h3>Dairy &amp; Pantry</h3>
     <div class="item" data-id="s10" data-rs="shrimp,coco" data-r="shrimp" data-name="Coconut milk" data-note="13.5 oz">
@@ -162,7 +176,7 @@
       <div class="row1"><span class="name">Tomato paste</span><span class="qty">1 small can</span></div>
       <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
     </div>
-    <div class="item" data-id="s12" data-rs="tikka" data-r="tikka" data-name="Plain yogurt" data-note="32 oz">
+    <div class="item" data-id="s12" data-rs="tikka,croute" data-r="tikka" data-name="Plain yogurt" data-note="32 oz">
       <div class="row1"><span class="name">Plain yogurt</span><span class="qty">1 large tub · 32 oz</span></div>
       <div class="tip">For the tikka marinade — you'll use about 1⅓ cups. Whole milk yogurt = best char.</div>
       <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
@@ -180,11 +194,11 @@
       <div class="row1"><span class="name">Panko breadcrumbs</span><span class="qty">½ cup</span></div>
       <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
     </div>
-    <div class="item" data-id="s19" data-rs="cordon" data-r="cordon" data-name="Eggs" data-note="for the breading">
+    <div class="item" data-id="s19" data-rs="cordon,croute" data-r="cordon" data-name="Eggs" data-note="for the breading">
       <div class="row1"><span class="name">Eggs</span><span class="qty">× 2</span></div>
       <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
     </div>
-    <div class="item" data-id="s20" data-rs="croque" data-r="croque" data-name="Milk" data-note="for the béchamel">
+    <div class="item" data-id="s20" data-rs="croque,croute" data-r="croque" data-name="Milk" data-note="for the béchamel">
       <div class="row1"><span class="name">Milk</span><span class="qty">1 cup</span></div>
       <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
     </div>
@@ -193,6 +207,20 @@
       <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
     </div>
 
+  </div>
+
+    <div class="item" data-id="s23" data-rs="croute" data-r="croute" data-name="Rice paper sheets" data-note="large squares">
+      <div class="row1"><span class="name">Rice paper sheets</span><span class="qty">4 sheets</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s24" data-rs="croute" data-r="croute" data-name="Sesame seeds" data-note="for topping">
+      <div class="row1"><span class="name">Sesame seeds</span><span class="qty">1 tsp</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s25" data-rs="croute" data-r="croute" data-name="Ricotta" data-note="small tub">
+      <div class="row1"><span class="name">Ricotta</span><span class="qty">¼ cup</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
   </div>
 
   <div class="onhand"><b>Assumed on hand</b> (you said you’re stocked): rice, oil, butter, salt, pepper, turmeric, cumin, coriander, paprika, curry powder, garam masala.</div>
@@ -208,6 +236,6 @@
   <p>A running cookbook — new tried-and-rated recipes land here. Dots sit at their real minute marks; tap one to jump there. The dashed zone on each lane is prep.</p>
 </footer>
 
-<script src="assets/img-data/shrimp_curry.js"></script><script src="assets/img-data/lemon_salmon.js"></script><script src="assets/img-data/chicken_tikka.js"></script><script src="assets/img-data/koobideh.js"></script><script src="assets/img-data/shrimp_steps.js"></script><script src="assets/img-data/salmon_steps.js"></script><script src="assets/img-data/chelow.js"></script><script src="assets/img-data/shrimp_prep.js"></script><script src="assets/img-data/salmon_prep.js"></script><script src="assets/img-data/cordon_bleu.js"></script><script src="assets/img-data/cordon_prep.js"></script><script src="assets/img-data/cordon_steps.js"></script><script src="assets/img-data/croque.js"></script><script src="assets/img-data/croque_prep.js"></script><script src="assets/img-data/croque_steps.js"></script><script src="assets/img-data/thighs.js"></script><script src="assets/img-data/thighs_prep.js"></script><script src="assets/img-data/thighs_steps.js"></script><script src="assets/img-data/coco_curry.js"></script><script src="assets/img-data/coco_prep.js"></script><script src="assets/img-data/coco_steps.js"></script><script src="assets/app.js"></script>
+<script src="assets/img-data/shrimp_curry.js"></script><script src="assets/img-data/lemon_salmon.js"></script><script src="assets/img-data/chicken_tikka.js"></script><script src="assets/img-data/koobideh.js"></script><script src="assets/img-data/shrimp_steps.js"></script><script src="assets/img-data/salmon_steps.js"></script><script src="assets/img-data/chelow.js"></script><script src="assets/img-data/shrimp_prep.js"></script><script src="assets/img-data/salmon_prep.js"></script><script src="assets/img-data/cordon_bleu.js"></script><script src="assets/img-data/cordon_prep.js"></script><script src="assets/img-data/cordon_steps.js"></script><script src="assets/img-data/croque.js"></script><script src="assets/img-data/croque_prep.js"></script><script src="assets/img-data/croque_steps.js"></script><script src="assets/img-data/thighs.js"></script><script src="assets/img-data/thighs_prep.js"></script><script src="assets/img-data/thighs_steps.js"></script><script src="assets/img-data/coco_curry.js"></script><script src="assets/img-data/coco_prep.js"></script><script src="assets/img-data/coco_steps.js"></script><script src="assets/img-data/croute.js"></script><script src="assets/img-data/croute_prep.js"></script><script src="assets/img-data/croute_steps.js"></script><script src="assets/app.js"></script>
 </body>
 </html>
