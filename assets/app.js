@@ -249,6 +249,37 @@ var RECIPES = {
         {t:23, short:"Serve", label:"Serve over rice", vis:"hero", detail:"Spoon over rice."} ]}
     ]}
   },
+  croute: {
+    name: "Rice Paper Salmon en Croûte", img: IMG("croute"), baseServ: 4,
+    prepImg: IMG("croute_prep"),
+    stepsImg: IMG("croute_steps"),
+    chelowImg: null,
+    ing: [
+      {q:14, u:"oz", n:"salmon fillet", note:"skinless, in 4 pieces"},
+      {q:3, u:"cup", up:"cups", n:"fresh spinach", note:"wilted & chopped"},
+      {q:0.25, u:"cup", up:"cups", n:"ricotta"},
+      {q:4, u:"sheet", up:"sheets", n:"rice paper", note:"large squares"},
+      {q:2, u:"", n:"egg", np:"eggs", count:1},
+      {q:2, u:"tbsp", n:"milk"},
+      {q:3, u:"tbsp", n:"plain yogurt", note:"for the dip"},
+      {q:2, u:"tbsp", n:"fresh dill", note:"chopped"},
+      {q:1, u:"tsp", n:"sesame seeds"},
+      {q:0.5, u:"tsp", n:"garlic powder"},
+      {q:null, n:"olive oil spray", note:"or a mister"},
+      {q:null, n:"salt & pepper", note:"to taste"}
+    ],
+    tl: { T: 28, lanes: [
+      {name:"Dip", color:"#3e7d4e", events:[
+        {prep:1, short:"Chop dill", label:"Chop the dill", vis:"prep", detail:"Chop the dill for the dip."},
+        {t:20, short:"Mix dip", label:"Mix the yogurt dip", vis:"prep", detail:"Stir the yogurt with garlic powder, salt, and dill. Refrigerate until serving."} ]},
+      {name:"Parcels", color:"#e0782f", events:[
+        {prep:1, short:"Mix filling", label:"Wilt spinach; mix with ricotta", vis:"prep", detail:"Wilt the spinach and chop it fine. Mix with the ricotta, garlic powder, salt, and pepper."},
+        {t:0, short:"Cut + season salmon", label:"Cut salmon in 4; season", vis:"q0", detail:"Cut the salmon into 4 equal pieces; season lightly with salt and pepper."},
+        {t:3, dur:8, short:"Fold 4 parcels", label:"Brush, fill, and fold 4 parcels", vis:"q1", detail:"Whisk the egg and milk. Brush each rice paper on both sides. Filling, salmon, more filling — fold into parcels. Heat the air fryer to 400°F while you fold."},
+        {t:11, dur:16, short:"Air fry — 16 min", label:"Air fry at 400°F — 16 min", vis:"q2", detail:"Parcels seam-side down, sprayed with oil, sesame seeds on top — 400°F for 15 to 16 min, until golden."},
+        {t:27, short:"Serve", label:"Serve with the dip", vis:"hero", detail:"Serve straight from the air fryer with the dip — the rice paper softens as it sits."} ]}
+    ]}
+  },
   chelow: {
     name: "Chelow Rice", baseServ: 2,
     ing: [
@@ -264,20 +295,21 @@ var POS = ["0% 0%","100% 0%","0% 100%","100% 100%"];
 /* ============ SHOPPING SYNC: items <-> recipe ingredients ============ */
 /* which recipe ingredients feed each shopping item (for qty scaling is per-item data-r) */
 var SHOP_MAP = {
-  s1:[["shrimp",0]], s2:[["salmon",0]], s3:[["tikka",0],["cordon",0],["coco",0]], s4:[["koobideh",0]],
+  s1:[["shrimp",0]], s2:[["salmon",0],["croute",0]], s3:[["tikka",0],["cordon",0],["coco",0]], s4:[["koobideh",0]],
   s5:[["shrimp",1],["koobideh",1],["coco",1]],
   s6:[["tikka",4],["shrimp",2],["salmon",2],["thighs",3],["coco",2]],
   s7:[["shrimp",3],["coco",3]], s8:[["tikka",2],["salmon",1]], s9:[["koobideh",5]],
-  s10:[["shrimp",4],["coco",4]], s11:[["shrimp",5]], s12:[["tikka",1]],
+  s10:[["shrimp",4],["coco",4]], s11:[["shrimp",5]], s12:[["tikka",1],["croute",6]],
   s13:[["thighs",0]], s14:[["cordon",1],["croque",1]], s15:[["cordon",2],["croque",2]],
   s16:[["croque",0]], s17:[["cordon",3],["thighs",1]], s18:[["cordon",4]],
-  s19:[["cordon",5]], s20:[["croque",3]], s21:[["croque",4]], s22:[["croque",8]]
+  s19:[["cordon",5],["croute",4]], s20:[["croque",3],["croute",5]], s21:[["croque",4]], s22:[["croque",8]],
+  s23:[["croute",3]], s24:[["croute",8]], s25:[["croute",2]], s26:[["croute",1]], s27:[["croute",7]]
 };
 /* per-page shopping quantities: [qty, unit, plural, count?] at the recipe's base servings.
    "index" = the consolidated weekly-list value shown on the home page. */
 var SHOP_QTY = {
   s1:  { index:[12,"oz"],                    shrimp:[12,"oz"] },
-  s2:  { index:[0.75,"lb"],                 salmon:[0.75,"lb"] },
+  s2:  { index:[1.625,"lb"],                salmon:[0.75,"lb"], croute:[14,"oz"] },
   s3:  { index:[4.5,"lb"],                  tikka:[3,"lb"], cordon:[0.75,"lb"], coco:[0.75,"lb"] },
   s4:  { index:[0.75,"lb"],                 koobideh:[0.75,"lb"] },
   s5:  { index:[3,"","",1],                 shrimp:[1,"","",1], koobideh:[1,"","",1], coco:[1,"","",1] },
@@ -287,17 +319,22 @@ var SHOP_QTY = {
   s9:  { index:[1,"","",1],                 koobideh:[1,"","",1] },
   s10: { index:[2,"can","cans"],            shrimp:[1,"can","cans"], coco:[1,"can","cans"] },
   s11: { index:[1,"small can","small cans"], shrimp:[1,"small can","small cans"] },
-  s12: { index:[1,"large tub","large tubs"], tikka:[1,"large tub","large tubs"] },
+  s12: { index:[1,"large tub","large tubs"], tikka:[1,"large tub","large tubs"], croute:[3,"tbsp"] },
   s13: { index:[1.25,"lb"],                 thighs:[1.25,"lb"] },
   s14: { index:[8,"slice","slices"],        cordon:[4,"slice","slices"], croque:[4,"slice","slices"] },
   s15: { index:[8,"oz"],                    cordon:[4,"slice","slices"], croque:[1,"cup","cups"] },
   s16: { index:[4,"slice","slices"],        croque:[4,"slice","slices"] },
   s17: { index:[2,"lb"],                    cordon:[1,"lb"], thighs:[1,"lb"] },
   s18: { index:[0.5,"cup","cups"],          cordon:[0.5,"cup","cups"] },
-  s19: { index:[2,"","",1],                 cordon:[2,"","",1] },
+  s19: { index:[4,"","",1],                 cordon:[2,"","",1], croute:[2,"","",1] },
   s22: { index:[2,"handful","handfuls"],    croque:[2,"handful","handfuls"] },
-  s20: { index:[1,"cup","cups"],            croque:[1,"cup","cups"] },
-  s21: { index:[2,"tbsp"],                  croque:[2,"tbsp"] }
+  s20: { index:[1.125,"cup","cups"],        croque:[1,"cup","cups"], croute:[2,"tbsp"] },
+  s21: { index:[2,"tbsp"],                  croque:[2,"tbsp"] },
+  s23: { index:[4,"sheet","sheets"],        croute:[4,"sheet","sheets"] },
+  s24: { index:[1,"tsp"],                   croute:[1,"tsp"] },
+  s25: { index:[0.25,"cup","cups"],         croute:[0.25,"cup","cups"] },
+  s26: { index:[3,"cup","cups"],            croute:[3,"cup","cups"] },
+  s27: { index:[1,"bunch","bunches"],       croute:[1,"bunch","bunches"] }
 };
 var buyState = {};
 try{ buyState = JSON.parse(localStorage.getItem("mp_buy_v1") || "{}"); }catch(e){}
