@@ -144,6 +144,30 @@ var RECIPES = {
 };
 var POS = ["0% 0%","100% 0%","0% 100%","100% 100%"];
 
+/* ============ SHOPPING SYNC: items <-> recipe ingredients ============ */
+/* which recipe ingredients feed each shopping item (for qty scaling is per-item data-r) */
+var SHOP_MAP = {
+  s1:[["shrimp",0]], s2:[["salmon",0]], s3:[["tikka",0]], s4:[["koobideh",0]],
+  s5:[["shrimp",1],["koobideh",1]], s6:[["tikka",4],["shrimp",2],["salmon",2]],
+  s7:[["shrimp",3]], s8:[["tikka",2],["salmon",1]], s9:[["koobideh",5]],
+  s10:[["shrimp",4]], s11:[["shrimp",5]], s12:[["tikka",1]]
+};
+var buyState = {};
+try{ buyState = JSON.parse(localStorage.getItem("mp_buy_v1") || "{}"); }catch(e){}
+var ING_SHOP = {};
+Object.keys(SHOP_MAP).forEach(function(sid){
+  SHOP_MAP[sid].forEach(function(p){
+    var k = p[0] + ":" + p[1];
+    (ING_SHOP[k] = ING_SHOP[k] || []).push(sid);
+  });
+});
+/* effective "on the list": not marked have, and at least one contributing ingredient still bought */
+function shopNeed(id){
+  if(shopState[id] === "have") return false;
+  var c = SHOP_MAP[id];
+  return c ? c.some(function(p){ return buyState[p[0] + ":" + p[1]] !== 0; }) : true;
+}
+
 /* ================= SERVINGS + INGREDIENTS ================= */
 var servState = {};
 try{ servState = JSON.parse(localStorage.getItem("mp_serv_v1") || "{}"); }catch(e){}
@@ -180,6 +204,21 @@ function renderIngredients(key){
     var li = document.createElement("li");
     li.innerHTML = ingHTML(ing, factor);
     var id = key + ":" + idx;
+    if(ING_SHOP[id]){
+      var ck = document.createElement("input");
+      ck.type = "checkbox"; ck.className = "buyck"; ck.checked = buyState[id] !== 0;
+      ck.title = "Include in shopping list";
+      ck.setAttribute("aria-label", "Include " + ing.n + " in shopping list");
+      (function(box, bid){
+        box.addEventListener("click", function(e){ e.stopPropagation(); });
+        box.addEventListener("change", function(){
+          buyState[bid] = box.checked ? 1 : 0;
+          try{ localStorage.setItem("mp_buy_v1", JSON.stringify(buyState)); }catch(e){}
+          if(paintCart) paintCart();
+        });
+      })(ck, id);
+      li.insertBefore(ck, li.firstChild);
+    }
     if(ingrState[id]) li.classList.add("done");
     li.addEventListener("click", function(){
       li.classList.toggle("done");
@@ -197,6 +236,7 @@ function setServings(key, n){
   if(activeRecipe === key){ document.getElementById("sbServ").textContent = n; }
   renderIngredients(key);
   if(key === "koobideh"){ renderIngredients("chelow"); }
+  if(paintCart) paintCart();
 }
 document.querySelectorAll(".stepper[data-r]").forEach(function(st){
   var key = st.getAttribute("data-r");
@@ -481,17 +521,36 @@ items.forEach(function(it){
 var paintCart = null; /* assigned by the cart panel below */
 function saveShop(){ try{ localStorage.setItem("mp_shop_v1", JSON.stringify(shopState)); }catch(e){} }
 function setShop(id, val){ shopState[id] = val; saveShop(); paintShop(); }
+/* scaled quantity for a shopping item from its recipe's servings */
+function shopQtyOf(it){
+  var r = it.getAttribute("data-r"), q = parseFloat(it.getAttribute("data-q")),
+      f = servingsOf(r) / RECIPES[r].baseServ, q2 = q * f,
+      cnt = it.getAttribute("data-count") === "1",
+      u = it.getAttribute("data-u") || "", up = it.getAttribute("data-up") || u,
+      unit = (q2 < 1 + 1e-9) ? u : up;
+  return { t: fmtQty(q2, cnt), unit: unit };
+}
+function shopNameHTML(it){
+  var o = shopQtyOf(it), name = it.getAttribute("data-name"), note = it.getAttribute("data-note");
+  var qpart = o.unit ? ", " + o.t + " " + o.unit : " × " + o.t;
+  return "<b>" + name + qpart + "</b>" + (note ? ' <span class="inote">(' + note + ')</span>' : "");
+}
+function shopNameText(it){
+  var o = shopQtyOf(it), name = it.getAttribute("data-name"), note = it.getAttribute("data-note");
+  var qpart = o.unit ? ", " + o.t + " " + o.unit : " × " + o.t;
+  return name + qpart + (note ? " (" + note + ")" : "");
+}
 function paintShop(){
-  var need = 0, have = 0;
+  var need = 0;
   items.forEach(function(it){
     var id = it.getAttribute("data-id");
-    var s = shopState[id] === "have" ? "have" : "need";
+    var s = shopNeed(id) ? "need" : "have";
     it.querySelector(".have").classList.toggle("on", s === "have");
     it.querySelector(".need").classList.toggle("on", s === "need");
-    if(s === "need") need++; else have++;
+    if(s === "need") need++;
   });
   var c = document.getElementById("shopCount");
-  if(c) c.innerHTML = "<b>"+need+"</b> to buy · <b>"+have+"</b> already have";
+  if(c) c.innerHTML = "<b>"+need+"</b> to buy · <b>"+(items.length-need)+"</b> already have";
   if(paintCart) paintCart();
 }
 items.forEach(function(it){
@@ -503,9 +562,8 @@ function copyList(btn){
   var lines = ["Please add the following items to my cart:", ""];
   var n = 0;
   items.forEach(function(it){
-    if(shopState[it.getAttribute("data-id")] === "need"){
-      lines.push("• " + it.getAttribute("data-name")); n++;
-    }
+    var id = it.getAttribute("data-id");
+    if(shopNeed(id)){ lines.push("• " + shopNameText(it)); n++; }
   });
   if(n === 0){ lines.push("(your cart is empty — everything is marked 'Have it')"); }
   var text = lines.join("\n");
@@ -529,22 +587,23 @@ function copyList(btn){
       list = document.getElementById("cartItems"), count = document.getElementById("cartCount"),
       total = document.getElementById("cartTotal");
   paintCart = function(){
-    var ns = items.filter(function(it){ return shopState[it.getAttribute("data-id")] === "need"; });
-    count.textContent = ns.length;
-    count.style.display = ns.length ? "flex" : "none";
-    total.textContent = ns.length + (ns.length === 1 ? " item on the list" : " items on the list");
+    var n = 0;
+    items.forEach(function(it){ if(shopNeed(it.getAttribute("data-id"))) n++; });
+    count.textContent = n;
+    count.style.display = n ? "flex" : "none";
+    total.textContent = n + (n === 1 ? " item on the list" : " items on the list");
     list.innerHTML = "";
     items.forEach(function(it){
-      var id = it.getAttribute("data-id"), need = shopState[id] === "need",
+      var id = it.getAttribute("data-id"), need = shopNeed(id),
           tipEl = it.querySelector(".tip");
       var li = document.createElement("li"); if(!need) li.className = "off";
       var lab = document.createElement("label"),
           cb = document.createElement("input"),
           tx = document.createElement("span"); tx.className = "trow";
       cb.type = "checkbox"; cb.checked = need;
-      cb.setAttribute("aria-label", it.getAttribute("data-name"));
+      cb.setAttribute("aria-label", shopNameText(it));
       cb.addEventListener("change", function(){ setShop(id, cb.checked ? "need" : "have"); });
-      tx.innerHTML = "<b>" + it.getAttribute("data-name") + "</b>" +
+      tx.innerHTML = shopNameHTML(it) +
         (tipEl ? "<small>" + tipEl.textContent + "</small>" : "");
       lab.appendChild(cb); lab.appendChild(tx); li.appendChild(lab);
       list.appendChild(li);
