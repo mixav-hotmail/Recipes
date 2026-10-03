@@ -34,7 +34,9 @@ The goal: one consistent, ADHD-friendly cooking companion.
       recipe's items)
     - `assets/app.css`, `assets/app.js` — shared stylesheet/script extracted
       from the template (all pages live at root, so relative `assets/…` refs
-      work everywhere; keep it that way — no subdirectories for pages)
+      work everywhere; keep it that way — no subdirectories for pages).
+      Their `<link>`/`<script>` URLs carry `?v=<content-hash>` so browsers
+      never run stale cached JS/CSS against a newer page after a deploy.
     - `assets/img-data/<key>.js` — the 9 photos as text-safe base64 JS
       (`window.IMG_DATA`), ~35–65KB each (the GitHub MCP tools can only push
       text — binary JPEGs would corrupt)
