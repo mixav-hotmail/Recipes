@@ -26,13 +26,17 @@ The goal: one consistent, ADHD-friendly cooking companion.
     Out: `~/workspace/your_files/meal-prep-this-week.html`
   - `build_web()` → multi-file static site for GitHub Pages, out:
     `~/workspace/meal-prep/web/`:
-    - `index.html` — full cookbook (all recipes + shopping); TOC links to subpages
+    - `index.html` — full cookbook (all recipes); TOC recipe pills link to
+      subpages; floating cart tab holds the consolidated 12-item shopping list
     - `tikka.html`, `shrimp.html`, `salmon.html`, `koobideh.html` — per-recipe
-      subpages (full chrome, one recipe section, "← All recipes" nav)
+      subpages (full chrome, one recipe section, no top nav; the cart shows
+      only that recipe's items)
     - `assets/app.css`, `assets/app.js` — shared stylesheet/script extracted
       from the template (all pages live at root, so relative `assets/…` refs
       work everywhere; keep it that way — no subdirectories for pages)
-    - `assets/img/<key>.jpg` — the 9 images as real files (full quality)
+    - `assets/img-data/<key>.js` — the 9 photos as text-safe base64 JS
+      (`window.IMG_DATA`), ~35–65KB each (the GitHub MCP tools can only push
+      text — binary JPEGs would corrupt)
     - `recipe-display-generator-instructions.md` (this doc), `README.md`
 - **Verify every build:**
   1. `node --check` on the script (extract last `<script>` for local;
@@ -42,15 +46,18 @@ The goal: one consistent, ADHD-friendly cooking companion.
      chronological order, auto-advance, clock-follows-dot, step-list rows, detail
      lines. All must pass.
   3. Web only: each subpage has exactly 1 recipe section, correct
-     `<title>`, back nav, no leftover placeholders; all 9 img-data files
-     define their key in `window.IMG_DATA` with a valid JPEG data URI.
-- **Deploy:** push `web/` to the `Recipes` repo root via the GitHub MCP
-  `push_files` (text-only interface — images ship as `assets/img-data/*.js`,
-  ~40–85KB each, pushed 1–2 files per call) → Settings → Pages → Deploy
-  from a branch → `main`, `/(root)` → Save. Live at
-  `https://mixav-hotmail.github.io/Recipes/`.
-- After any template change: rebuild **both**, re-verify, re-upload the web
-  folder (or just the changed files).
+     `<title>`, no leftover placeholders and no top nav; drawer + cart tab
+     present on every page; all 9 img-data files define their key in
+     `window.IMG_DATA` with a valid JPEG data URI; each page's cart lists
+     exactly its own items (index: all 12).
+- **Deploy:** push the changed files to the `Recipes` repo root with
+  `~/workspace/meal-prep/push_one.py <batch>` — add a batch entry for the
+  changed file set (each `push_files` call caps at ~120KB of argv; images go
+  1–2 per call, code pages bundle ~7 per call). Pushes need one approval each;
+  batch aggressively. Pages is already enabled (Deploy from a branch →
+  `main`, `/(root)`); live at `https://mixav-hotmail.github.io/Recipes/`.
+  The user wants direct commits — never hand them a zip to upload.
+- After any template change: rebuild **both**, re-verify, push the changed files.
 
 ## 2. Recipe data model (`RECIPES`)
 
@@ -86,7 +93,11 @@ tikka: {
 - Fractions render as glyphs: ¼ ⅓ ½ ⅔ ¾.
 - Servings stepper: 1–16, persists in `mp_serv_v1`. Ingredients rescale by
   `servings / baseServ`. Chelow ingredients follow **koobideh's** servings.
-- Tap an ingredient to check it off; persists in `mp_ingr_v1`.
+- Each ingredient that maps to the shopping list gets a 🛒 on/off button
+  (orange + white glow = on the list, greyed = off); persists in `mp_buy_v1`.
+  Unmapped pantry staples (spices, oil, salt, rice) get no button. The old
+  tap-to-check-off circle was removed (Oct 2026) — step progress lives in the
+  player now.
 - Koobideh gets a second `<ul data-ingr="chelow">` under a "Chelow rice" heading.
 
 ## 4. Timeline / player data model (the heart of the page)
@@ -161,14 +172,24 @@ tl: { T: 75, lanes: [
 
 ## 6. Page chrome
 
-- Header ("My Cookbook" + one-line sub), TOC pills (recipes + Shopping List).
+- Header ("My Cookbook" + one-line sub), TOC recipe pills (index only —
+  subpages have no top nav; the drawer covers navigation).
+- Retractable left drawer (☰ top-left): ⌂ Home + the 4 recipes, current page
+  highlighted. Opens on hover on desktop (no dim; closes on mouse-leave) or
+  tap; also closes on ×, scrim tap, link tap, or ESC.
 - Recipe section: `rhead` (title, meta line: ⏱ time · 🍽 servings · style tags,
   optional "✓ Tried … · 8/10" badge) + servings stepper; grid: ingredients+hero
   left, player right (≥1000 px), stacked below.
 - Sticky top bar appears on scroll: thumbnail, recipe name, servings stepper.
-- Shopping section: grouped items with Have it / Need it (persist `mp_shop_v1`),
-  "assumed on hand" note, bottom bar with live count, Copy Albertsons list,
-  Open Albertsons link.
+- Shopping = floating cart mini-tab (bottom-right: 🛒 + live count). Expands to
+  a near-full-height panel: every item with a checkbox (all checked by
+  default), quantities scaled to the page recipe's servings, tips, item count,
+  "Copy for assistant" (copies a prompt to paste into
+  albertsons.com/assistant) and "Open Albertsons →". The cart is **per page**:
+  recipe subpages list only their own items (filtered at runtime by the
+  item's `data-rs` via `PAGE_R`); index lists all 12.
+- The old bottom shopping section is gone — kept `hidden` in the template as
+  the items' data source. The old fixed bottom count bar was removed.
 - Footer: one line describing the dot/timeline conventions.
 
 ## 7. Design tokens
@@ -179,8 +200,10 @@ Player is dark (`#1c1a17`). Warm, rounded, no walls of text.
 
 ## 8. localStorage keys
 
-`mp_serv_v1` (servings), `mp_ingr_v1` (checked ingredients),
-`mp_shop_v1` (have/need). Never rename without a migration.
+`mp_serv_v1` (servings), `mp_shop_v1` (cart have/need per item id),
+`mp_buy_v1` (ingredient 🛒 on/off per `recipe:idx`). `mp_ingr_v1` is retired
+(the tap-to-check-off circle was removed Oct 2026). Never rename without a
+migration.
 
 ## 9. Adding a new recipe — checklist
 
@@ -188,8 +211,14 @@ Player is dark (`#1c1a17`). Warm, rounded, no walls of text.
 2. Add `RECIPES` entry: `name`, `img`, `baseServ` (2 = dinner + next-day lunch,
    unless the user says otherwise), `ing`, `tl` with 2 lanes and a `detail` on
    **every** event.
-3. Add the `<section>` + TOC link (copy an existing one).
-4. Add shopping items if it needs new groceries.
+3. Add the `<section>` + TOC pill (index TOC only; subpages get no nav).
+4. Shopping items (only if the recipe needs new groceries): add the hidden
+   `<div class="item">` with `data-rs` (recipes it belongs to, comma-separated),
+   `data-r` (primary recipe, scales the consolidated index quantity),
+   `data-name`, `data-note`; add its quantities to `SHOP_QTY`
+   (`index` + one entry per recipe page: `[qty, unit, plural, count?]`,
+   at that recipe's `baseServ`); add its contributors to `SHOP_MAP`
+   (`sid: [[recipe, ingIdx], ...]` — drives the 🛒 exclusion sync).
 5. Rebuild (§1), run `node --check`, run the stub suite — all green.
 6. Keep lanes ending together; keep `short` ≤5 words; keep quantities out of
    `detail`.
