@@ -177,11 +177,15 @@ Object.keys(SHOP_MAP).forEach(function(sid){
     (ING_SHOP[k] = ING_SHOP[k] || []).push(sid);
   });
 });
-/* effective "on the list": not marked have, and at least one contributing ingredient still bought */
+/* effective "on the list": not marked have, and at least one contributing ingredient still bought.
+   On a recipe page only that recipe's contributors count (so unchecking garlic on the
+   tikka page drops it from tikka's cart even though shrimp still wants garlic). */
 function shopNeed(id){
   if(shopState[id] === "have") return false;
   var c = SHOP_MAP[id];
-  return c ? c.some(function(p){ return buyState[p[0] + ":" + p[1]] !== 0; }) : true;
+  if(!c) return true;
+  if(PAGE_R !== "index") c = c.filter(function(p){ return p[0] === PAGE_R; });
+  return c.some(function(p){ return buyState[p[0] + ":" + p[1]] !== 0; });
 }
 
 /* ================= SERVINGS + INGREDIENTS ================= */
@@ -208,8 +212,6 @@ function ingHTML(ing, factor){
   var u = unit ? " " + unit : "";
   return '<span class="iqty">' + qs + u + '</span> ' + name + note;
 }
-var ingrState = {};
-try{ ingrState = JSON.parse(localStorage.getItem("mp_ingr_v1") || "{}"); }catch(e){}
 function renderIngredients(key){
   var ul = document.querySelector('ul[data-ingr="' + key + '"]');
   if(!ul) return;
@@ -221,26 +223,25 @@ function renderIngredients(key){
     li.innerHTML = ingHTML(ing, factor);
     var id = key + ":" + idx;
     if(ING_SHOP[id]){
-      var ck = document.createElement("input");
-      ck.type = "checkbox"; ck.className = "buyck"; ck.checked = buyState[id] !== 0;
-      ck.title = "Include in shopping list";
-      ck.setAttribute("aria-label", "Include " + ing.n + " in shopping list");
-      (function(box, bid){
-        box.addEventListener("click", function(e){ e.stopPropagation(); });
-        box.addEventListener("change", function(){
-          buyState[bid] = box.checked ? 1 : 0;
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "buybtn" + (buyState[id] !== 0 ? " on" : "");
+      b.textContent = "🛒";
+      b.title = "On/off the shopping list";
+      b.setAttribute("aria-label", "Toggle " + ing.n + " on the shopping list");
+      b.setAttribute("aria-pressed", buyState[id] !== 0 ? "true" : "false");
+      (function(btn, bid){
+        btn.addEventListener("click", function(){
+          var on = !btn.classList.contains("on");
+          btn.classList.toggle("on", on);
+          btn.setAttribute("aria-pressed", on ? "true" : "false");
+          buyState[bid] = on ? 1 : 0;
           try{ localStorage.setItem("mp_buy_v1", JSON.stringify(buyState)); }catch(e){}
           if(paintCart) paintCart();
         });
-      })(ck, id);
-      li.insertBefore(ck, li.firstChild);
+      })(b, id);
+      li.insertBefore(b, li.firstChild);
     }
-    if(ingrState[id]) li.classList.add("done");
-    li.addEventListener("click", function(){
-      li.classList.toggle("done");
-      ingrState[id] = li.classList.contains("done") ? 1 : 0;
-      try{ localStorage.setItem("mp_ingr_v1", JSON.stringify(ingrState)); }catch(e){}
-    });
     ul.appendChild(li);
   });
 }

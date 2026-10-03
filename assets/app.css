@@ -103,14 +103,13 @@
   .ingredients h3{margin:0 0 8px; font-size:14px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted);}
   .ingredients h4{margin:14px 0 4px; font-size:13px; text-transform:uppercase; letter-spacing:.6px; color:var(--accent-dark);}
   .ingredients ul{margin:0; padding:0; list-style:none;}
-  .ingredients li{padding:7px 0; border-top:1px dashed var(--line); font-size:15px; cursor:pointer; display:flex; gap:10px; align-items:baseline;}
+  .ingredients li{padding:7px 0; border-top:1px dashed var(--line); font-size:15px; display:flex; gap:10px; align-items:center;}
   .ingredients li:first-child{border-top:none;}
-  .ingredients li::before{content:""; flex:0 0 auto; width:16px; height:16px; border:2px solid var(--accent);
-    border-radius:50%; transform:translateY(2px);}
-  .ingredients li.done{color:var(--muted); text-decoration:line-through;}
-  .ingredients li.done::before{background:var(--accent); border-color:var(--accent);}
+  .ingredients li .buybtn{flex:0 0 auto; width:30px; height:30px; border-radius:50%; border:1px solid var(--line);
+    background:#fff; font-size:15px; line-height:1; cursor:pointer; padding:0;}
+  .ingredients li .buybtn.on{background:var(--accent); border-color:var(--accent);}
+  .ingredients li .buybtn:not(.on){opacity:.35; filter:grayscale(1);}
   .ingredients .iqty{font-weight:700; font-variant-numeric:tabular-nums;}
-  .ingredients li .buyck{width:17px; height:17px; accent-color:var(--green); flex:0 0 auto; cursor:pointer; margin:1px 0 0;}
   .ingredients .inote{color:var(--muted); font-size:13.5px;}
   /* ---------- unified player ---------- */
   .uplayer{background:#1c1a17; border-radius:var(--radius); overflow:hidden; color:#fff; box-shadow:0 10px 30px rgba(0,0,0,.18);}
