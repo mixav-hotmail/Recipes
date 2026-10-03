@@ -662,10 +662,6 @@ function copyList(btn){
   document.getElementById("cartClose").addEventListener("click", close);
   document.getElementById("cartCopy").addEventListener("click", function(){ copyList(this); });
   document.addEventListener("keydown", function(e){ if(e.key === "Escape") close(); });
-  /* old "Shopping List" links now open the mini tab instead of jumping nowhere */
-  document.querySelectorAll('a[href="#shopping"], a[href="index.html#shopping"]').forEach(function(a){
-    a.addEventListener("click", function(e){ e.preventDefault(); open(); });
-  });
 })();
 paintShop();
 paintBuyButtons();
@@ -678,10 +674,29 @@ paintBuyButtons();
     btn.setAttribute("aria-expanded","true"); drawer.setAttribute("aria-hidden","false"); }
   function close(){ drawer.classList.remove("open"); scrim.classList.remove("show");
     btn.setAttribute("aria-expanded","false"); drawer.setAttribute("aria-hidden","true"); }
-  btn.addEventListener("click", function(){ drawer.classList.contains("open")?close():open(); });
+  btn.addEventListener("click", function(){
+    if(drawer.classList.contains("open")){ if(!hoverMode) close(); }
+    else { hoverMode = false; open(); }
+  });
   closeBtn.addEventListener("click", close);
   scrim.addEventListener("click", close);
   document.addEventListener("keydown", function(e){ if(e.key==="Escape") close(); });
+  /* hover to peek (desktop): no dim, closes when the mouse leaves */
+  var canHover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+  var hoverMode = false, hoverT = null;
+  function hoverClose(){
+    clearTimeout(hoverT);
+    hoverT = setTimeout(function(){ if(hoverMode){ hoverMode = false; close(); } }, 280);
+  }
+  if(canHover){
+    btn.addEventListener("mouseenter", function(){
+      hoverMode = true; clearTimeout(hoverT); open();
+      scrim.classList.remove("show");
+    });
+    btn.addEventListener("mouseleave", function(){ if(hoverMode) hoverClose(); });
+    drawer.addEventListener("mouseenter", function(){ clearTimeout(hoverT); });
+    drawer.addEventListener("mouseleave", function(){ if(hoverMode) hoverClose(); });
+  }
   var links=drawer.querySelectorAll("a");
   links.forEach(function(a){ a.addEventListener("click", close); });
   var page=location.pathname.split("/").pop()||"index.html";
