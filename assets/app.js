@@ -132,6 +132,123 @@ var RECIPES = {
         {t:74, short:"Serve", label:"Serve over chelow", vis:"hero", detail:"Serve over chelow."} ]}
     ]}
   },
+  cordon: {
+    name: "Chicken Cordon Bleu", img: IMG("cordon_bleu"), baseServ: 2,
+    prepImg: IMG("cordon_prep"),
+    stepsImg: IMG("cordon_steps"),
+    chelowImg: null,
+    ing: [
+      {q:0.75, u:"lb", n:"chicken breast", note:"2 small"},
+      {q:4, u:"slice", up:"slices", n:"turkey", note:"deli slices"},
+      {q:4, u:"slice", up:"slices", n:"Swiss cheese", note:"or Gruyère"},
+      {q:1, u:"lb", n:"potatoes", note:"~2 medium, in wedges"},
+      {q:0.5, u:"cup", up:"cups", n:"panko breadcrumbs"},
+      {q:2, u:"", n:"egg", np:"eggs", note:"beaten", count:1},
+      {q:1, u:"tbsp", n:"Dijon mustard", note:"optional"},
+      {q:null, n:"salt & pepper", note:"to taste"},
+      {q:2, u:"tsp", n:"oil"}
+    ],
+    tl: { T: 38, lanes: [
+      {name:"Potatoes", color:"#3e7d4e", events:[
+        {prep:1, short:"Cut wedges", label:"Heat oven 425°F; cut potatoes in wedges", vis:"prep", detail:"Heat the oven to 425°F. Cut the potatoes into wedges and toss with oil, salt, and pepper."},
+        {t:0, dur:35, short:"Wedges in — 35 min", label:"Wedges on a sheet pan — into the oven", vis:"q0", detail:"Spread the wedges on an oiled sheet pan — into the oven for 35 min."},
+        {t:20, short:"Flip wedges", label:"Flip each wedge", vis:"q1", detail:"Flip each wedge so both sides brown."},
+        {t:35, short:"Out, salt", label:"Out of the oven, salt while hot", vis:"q2", detail:"Out of the oven. Salt while they're hot."} ]},
+      {name:"Cordon Bleu", color:"#e0782f", events:[
+        {prep:1, short:"Pound, stuff, bread", label:"Butterfly, pound, stuff, bread", vis:"prep", detail:"Butterfly and pound the chicken flat. Spread with Dijon, layer turkey and Swiss, roll tight. Dip in beaten egg, coat with panko."},
+        {t:10, dur:22, short:"Into oven — 22 min", label:"Cordon bleu into the oven — 22 min", vis:"q0", detail:"Seam-side down on an oiled pan — 22 min, until deep golden."},
+        {t:32, short:"Out, rest 5", label:"Out of the oven, rest 5 min", vis:"q1", detail:"Out — rest 5 min so the cheese settles before slicing."},
+        {t:37, short:"Slice + serve", label:"Slice and serve with wedges", vis:"hero", detail:"Slice on the bias and serve with the potato wedges."} ]}
+    ]}
+  },
+  thighs: {
+    name: "Roast Chicken Thighs", img: IMG("thighs"), baseServ: 2,
+    prepImg: IMG("thighs_prep"),
+    stepsImg: IMG("thighs_steps"),
+    chelowImg: null,
+    ing: [
+      {q:1.25, u:"lb", n:"chicken thighs", note:"~4, bone-in"},
+      {q:1, u:"lb", n:"potatoes", note:"~2 medium, cubed"},
+      {q:2, u:"tbsp", n:"Dijon mustard"},
+      {q:3, u:"clove", up:"cloves", n:"garlic", note:"smashed", count:1},
+      {q:1, u:"tsp", n:"herbes de Provence", note:"or thyme"},
+      {q:2, u:"tbsp", n:"olive oil"},
+      {q:null, n:"salt & pepper", note:"to taste"}
+    ],
+    tl: { T: 50, lanes: [
+      {name:"Potatoes", color:"#3e7d4e", events:[
+        {prep:1, short:"Cube potatoes", label:"Heat oven 425°F; cube the potatoes", vis:"prep", detail:"Heat the oven to 425°F. Cube the potatoes and toss with oil, salt, and half the herbs."},
+        {t:0, dur:45, short:"Potatoes in — 45 min", label:"Potatoes on a sheet pan — into the oven", vis:"q0", detail:"Potatoes on an oiled sheet pan — into the oven for 45 min."},
+        {t:25, short:"Flip potatoes", label:"Flip the potatoes", vis:"q1", detail:"Flip the potatoes so they brown evenly."},
+        {t:45, short:"Out", label:"Potatoes out of the oven", vis:"q2", detail:"Out of the oven — they'll wait while the chicken rests."} ]},
+      {name:"Chicken", color:"#e0782f", events:[
+        {prep:1, short:"Rub thighs", label:"Pat dry; rub with Dijon, garlic, herbs", vis:"prep", detail:"Pat the thighs dry. Rub with Dijon, smashed garlic, olive oil, herbes de Provence, salt, and pepper."},
+        {t:10, dur:35, short:"Thighs in — 35 min", label:"Thighs skin-side up — into the oven", vis:"q0", detail:"Thighs skin-side up on the pan with the potatoes — 35 min, until the skin is crisp."},
+        {t:45, short:"Out, rest", label:"Out of the oven, rest a few minutes", vis:"q1", detail:"Out — rest a few minutes so the juices settle."},
+        {t:49, short:"Serve", label:"Serve with the potatoes", vis:"hero", detail:"Serve with the roasted potatoes."} ]}
+    ]}
+  },
+  croque: {
+    name: "Turkey Croque Monsieur", img: IMG("croque"), baseServ: 2,
+    prepImg: IMG("croque_prep"),
+    stepsImg: IMG("croque_steps"),
+    chelowImg: null,
+    ing: [
+      {q:4, u:"slice", up:"slices", n:"sandwich bread", note:"pain de mie"},
+      {q:4, u:"slice", up:"slices", n:"turkey", note:"deli slices"},
+      {q:1, u:"cup", up:"cups", n:"grated Gruyère", note:"~4 oz"},
+      {q:1, u:"cup", up:"cups", n:"milk"},
+      {q:2, u:"tbsp", n:"flour"},
+      {q:1, u:"tbsp", n:"Dijon mustard"},
+      {q:2, u:"tbsp", n:"butter"},
+      {q:null, n:"salt & pepper", note:"to taste"},
+      {q:2, u:"handful", up:"handfuls", n:"salad greens"}
+    ],
+    tl: { T: 16, lanes: [
+      {name:"Salad", color:"#3e7d4e", events:[
+        {prep:1, short:"Wash + chop", label:"Wash greens, chop toppings", vis:"prep", detail:"Wash the greens and chop any toppings."},
+        {t:14, short:"Toss salad", label:"Toss salad with oil + vinegar", vis:"prep", detail:"Toss with oil, a splash of vinegar, salt, and pepper."} ]},
+      {name:"Croque", color:"#e0782f", events:[
+        {prep:1, short:"Grate cheese", label:"Grate Gruyère; butter the bread", vis:"prep", detail:"Grate the Gruyère. Butter one side of each bread slice."},
+        {t:0, dur:5, short:"Béchamel — 5 min", label:"Make the béchamel — 5 min", vis:"q0", detail:"Melt the butter, whisk in the flour and cook 1 min, then whisk in the milk until thick."},
+        {t:5, short:"Assemble", label:"Assemble the croques", vis:"q1", detail:"Béchamel on the unbuttered sides. Turkey and half the cheese inside; béchamel and the rest of the cheese on top."},
+        {t:7, dur:6, short:"Broil — 6 min", label:"Under the broiler — 6 min", vis:"q2", detail:"Broiler on HIGH, rack 6 inches below — 5 to 6 min, until bubbling and golden."},
+        {t:13, short:"Out, rest 2", label:"Out, rest 2 min", vis:"q3", detail:"Out of the broiler — rest 2 min."},
+        {t:15, short:"Serve", label:"Serve with the salad", vis:"hero", detail:"Serve with the salad."} ]}
+    ]}
+  },
+  coco: {
+    name: "Chicken Coconut Curry", img: IMG("coco_curry"), baseServ: 2,
+    prepImg: IMG("coco_prep"),
+    stepsImg: IMG("coco_steps"),
+    chelowImg: null,
+    ing: [
+      {q:0.75, u:"lb", n:"chicken breast", note:"in pieces"},
+      {q:1, u:"", n:"onion", np:"onions", note:"diced", count:1},
+      {q:2, u:"clove", up:"cloves", n:"garlic", note:"minced", count:1},
+      {q:0.5, u:"tsp", n:"grated ginger"},
+      {q:1, u:"cup", up:"cups", n:"coconut milk", note:"~⅔ can"},
+      {q:2, u:"tsp", n:"curry powder"},
+      {q:0.75, u:"tsp", n:"salt"},
+      {q:2, u:"tsp", n:"oil"},
+      {q:null, n:"rice", note:"to serve"}
+    ],
+    tl: { T: 24, lanes: [
+      {name:"Rice (IP)", color:"#3e7d4e", events:[
+        {prep:1, short:"Rinse rice", label:"Rinse the rice", vis:"rice", detail:"Rinse until the water runs clear."},
+        {t:0, dur:4, short:"Pressure Cook 4 min", label:"Pressure Cook 4 min, valve Sealing", vis:"rice", detail:"1:1 rice to water. Pressure Cook 4 min, valve on Sealing."},
+        {t:11, dur:10, short:"Natural release 10 min", label:"Natural release 10 min", vis:"rice", detail:"Hands off — let the pressure drop on its own."},
+        {t:21, short:"Vent, open, fluff", label:"Vent, open, fluff", vis:"rice", detail:"Quick-release any remaining steam, open, and fluff with a fork."} ]},
+      {name:"Curry", color:"#e0782f", events:[
+        {prep:1, short:"Dice + mince", label:"Cut chicken; dice onion; mince garlic", vis:"prep", detail:"Cut the chicken into pieces. Dice the onion. Mince the garlic; grate the ginger."},
+        {t:2, dur:6, short:"Chicken in — 6 min", label:"Sear the chicken — 6 min", vis:"q0", detail:"Heat the oil over medium-high. Chicken in — sear 6 min, stirring."},
+        {t:8, dur:3, short:"Onion in — 3 min", label:"Onion in — soften 3 min", vis:"q1", detail:"Onion in — soften 3 min, stirring."},
+        {t:11, dur:2, short:"Spices — 2 min", label:"Garlic, ginger, curry powder — 2 min", vis:"q1", detail:"Garlic, ginger, and curry powder in — stir 2 min until fragrant."},
+        {t:13, dur:8, short:"Coconut milk — 8 min", label:"Coconut milk in — simmer 8 min", vis:"q2", detail:"Coconut milk and salt in — simmer 8 min until the chicken is cooked through."},
+        {t:21, short:"Off heat", label:"Off heat, lid on", vis:"q3", detail:"Off the heat, lid on — rest a couple of minutes."},
+        {t:23, short:"Serve", label:"Serve over rice", vis:"hero", detail:"Spoon over rice."} ]}
+    ]}
+  },
   chelow: {
     name: "Chelow Rice", baseServ: 2,
     ing: [
@@ -147,26 +264,40 @@ var POS = ["0% 0%","100% 0%","0% 100%","100% 100%"];
 /* ============ SHOPPING SYNC: items <-> recipe ingredients ============ */
 /* which recipe ingredients feed each shopping item (for qty scaling is per-item data-r) */
 var SHOP_MAP = {
-  s1:[["shrimp",0]], s2:[["salmon",0]], s3:[["tikka",0]], s4:[["koobideh",0]],
-  s5:[["shrimp",1],["koobideh",1]], s6:[["tikka",4],["shrimp",2],["salmon",2]],
-  s7:[["shrimp",3]], s8:[["tikka",2],["salmon",1]], s9:[["koobideh",5]],
-  s10:[["shrimp",4]], s11:[["shrimp",5]], s12:[["tikka",1]]
+  s1:[["shrimp",0]], s2:[["salmon",0]], s3:[["tikka",0],["cordon",0],["coco",0]], s4:[["koobideh",0]],
+  s5:[["shrimp",1],["koobideh",1],["coco",1]],
+  s6:[["tikka",4],["shrimp",2],["salmon",2],["thighs",3],["coco",2]],
+  s7:[["shrimp",3],["coco",3]], s8:[["tikka",2],["salmon",1]], s9:[["koobideh",5]],
+  s10:[["shrimp",4],["coco",4]], s11:[["shrimp",5]], s12:[["tikka",1]],
+  s13:[["thighs",0]], s14:[["cordon",1],["croque",1]], s15:[["cordon",2],["croque",2]],
+  s16:[["croque",0]], s17:[["cordon",3],["thighs",1]], s18:[["cordon",4]],
+  s19:[["cordon",5]], s20:[["croque",3]], s21:[["croque",4]], s22:[["croque",8]]
 };
 /* per-page shopping quantities: [qty, unit, plural, count?] at the recipe's base servings.
    "index" = the consolidated weekly-list value shown on the home page. */
 var SHOP_QTY = {
   s1:  { index:[12,"oz"],                    shrimp:[12,"oz"] },
   s2:  { index:[0.75,"lb"],                 salmon:[0.75,"lb"] },
-  s3:  { index:[3,"lb"],                    tikka:[3,"lb"] },
+  s3:  { index:[4.5,"lb"],                  tikka:[3,"lb"], cordon:[0.75,"lb"], coco:[0.75,"lb"] },
   s4:  { index:[0.75,"lb"],                 koobideh:[0.75,"lb"] },
-  s5:  { index:[2,"","",1],                 shrimp:[1,"","",1], koobideh:[1,"","",1] },
-  s6:  { index:[1,"head","heads"],          tikka:[1,"head","heads"], shrimp:[2,"clove","cloves"], salmon:[3,"clove","cloves"] },
-  s7:  { index:[1,"small piece","small pieces"], shrimp:[1,"small piece","small pieces"] },
+  s5:  { index:[3,"","",1],                 shrimp:[1,"","",1], koobideh:[1,"","",1], coco:[1,"","",1] },
+  s6:  { index:[1,"head","heads"],          tikka:[1,"head","heads"], shrimp:[2,"clove","cloves"], salmon:[3,"clove","cloves"], thighs:[3,"clove","cloves"], coco:[2,"clove","cloves"] },
+  s7:  { index:[1,"small piece","small pieces"], shrimp:[1,"small piece","small pieces"], coco:[1,"small piece","small pieces"] },
   s8:  { index:[2,"","",1],                 tikka:[1,"","",1], salmon:[1,"","",1] },
   s9:  { index:[1,"","",1],                 koobideh:[1,"","",1] },
-  s10: { index:[1,"can","cans"],            shrimp:[1,"can","cans"] },
+  s10: { index:[2,"can","cans"],            shrimp:[1,"can","cans"], coco:[1,"can","cans"] },
   s11: { index:[1,"small can","small cans"], shrimp:[1,"small can","small cans"] },
-  s12: { index:[1,"large tub","large tubs"], tikka:[1,"large tub","large tubs"] }
+  s12: { index:[1,"large tub","large tubs"], tikka:[1,"large tub","large tubs"] },
+  s13: { index:[1.25,"lb"],                 thighs:[1.25,"lb"] },
+  s14: { index:[8,"slice","slices"],        cordon:[4,"slice","slices"], croque:[4,"slice","slices"] },
+  s15: { index:[8,"oz"],                    cordon:[4,"slice","slices"], croque:[1,"cup","cups"] },
+  s16: { index:[4,"slice","slices"],        croque:[4,"slice","slices"] },
+  s17: { index:[2,"lb"],                    cordon:[1,"lb"], thighs:[1,"lb"] },
+  s18: { index:[0.5,"cup","cups"],          cordon:[0.5,"cup","cups"] },
+  s19: { index:[2,"","",1],                 cordon:[2,"","",1] },
+  s22: { index:[2,"handful","handfuls"],    croque:[2,"handful","handfuls"] },
+  s20: { index:[1,"cup","cups"],            croque:[1,"cup","cups"] },
+  s21: { index:[2,"tbsp"],                  croque:[2,"tbsp"] }
 };
 var buyState = {};
 try{ buyState = JSON.parse(localStorage.getItem("mp_buy_v1") || "{}"); }catch(e){}

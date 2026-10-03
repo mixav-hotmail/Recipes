@@ -28,9 +28,10 @@ The goal: one consistent, ADHD-friendly cooking companion.
     `~/workspace/meal-prep/web/`:
     - `index.html` — full cookbook (all recipes); TOC recipe pills link to
       subpages; floating cart tab holds the consolidated 12-item shopping list
-    - `tikka.html`, `shrimp.html`, `salmon.html`, `koobideh.html` — per-recipe
-      subpages (full chrome, one recipe section, no top nav; the cart shows
-      only that recipe's items)
+    - `tikka.html`, `shrimp.html`, `salmon.html`, `koobideh.html`, `cordon.html`,
+      `thighs.html`, `croque.html`, `coco.html` — per-recipe subpages (full
+      chrome, one recipe section, no top nav; the cart shows only that
+      recipe's items)
     - `assets/app.css`, `assets/app.js` — shared stylesheet/script extracted
       from the template (all pages live at root, so relative `assets/…` refs
       work everywhere; keep it that way — no subdirectories for pages)
@@ -76,7 +77,8 @@ tikka: {
 ```
 
 - `chelow` is an ingredients-only entry (no player): `{ name, baseServ, ing }`.
-- Keep recipe order: tikka, shrimp, salmon, koobideh. New recipes append after.
+- Keep recipe order: tikka, shrimp, salmon, koobideh, cordon, thighs, croque,
+  coco. New recipes append after.
 
 ## 3. Ingredients
 
@@ -236,3 +238,8 @@ migration.
   30-min steam → fluff.
 - User cooks for one, 2 servings default, 1–2 days ahead; Indian + Persian;
   2–3 seafood/week; red meat 1–2×/week; shops Albertsons/Target.
+- Oct 2026: added French bistro set — cordon bleu (potato wedges), roast chicken
+  thighs (Dijon/herbs, cubed potatoes), turkey croque monsieur (béchamel + Gruyère,
+  side salad), chicken coconut curry (rice). Shared cart items: chicken breast
+  (tikka/cordon/coco), turkey slices + Gruyère (cordon/croque), coconut milk
+  (shrimp/coco), garlic (tikka/shrimp/salmon/thighs/coco), potatoes (cordon/thighs).
