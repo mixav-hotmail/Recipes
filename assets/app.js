@@ -473,33 +473,33 @@ window.addEventListener("scroll", function(){
 var shopState = {};
 try{ shopState = JSON.parse(localStorage.getItem("mp_shop_v1") || "{}"); }catch(e){}
 var items = Array.prototype.slice.call(document.querySelectorAll(".item"));
+/* everything starts on the list; normalize old/neutral saved states */
+items.forEach(function(it){
+  var id = it.getAttribute("data-id");
+  if(shopState[id] !== "have" && shopState[id] !== "need") shopState[id] = "need";
+});
+var paintCart = null; /* assigned by the cart panel below */
+function saveShop(){ try{ localStorage.setItem("mp_shop_v1", JSON.stringify(shopState)); }catch(e){} }
+function setShop(id, val){ shopState[id] = val; saveShop(); paintShop(); }
 function paintShop(){
-  var need = 0, have = 0, undecided = 0;
+  var need = 0, have = 0;
   items.forEach(function(it){
     var id = it.getAttribute("data-id");
-    var s = shopState[id];
+    var s = shopState[id] === "have" ? "have" : "need";
     it.querySelector(".have").classList.toggle("on", s === "have");
     it.querySelector(".need").classList.toggle("on", s === "need");
-    if(s === "need") need++; else if(s === "have") have++; else undecided++;
+    if(s === "need") need++; else have++;
   });
   var c = document.getElementById("shopCount");
-  if(undecided > 0) c.innerHTML = "<b>"+undecided+"</b> items to decide on";
-  else c.innerHTML = "<b>"+need+"</b> to buy · <b>"+have+"</b> already have";
+  if(c) c.innerHTML = "<b>"+need+"</b> to buy · <b>"+have+"</b> already have";
+  if(paintCart) paintCart();
 }
 items.forEach(function(it){
   var id = it.getAttribute("data-id");
-  it.querySelector(".have").addEventListener("click", function(){
-    shopState[id] = shopState[id] === "have" ? null : "have";
-    try{ localStorage.setItem("mp_shop_v1", JSON.stringify(shopState)); }catch(e){}
-    paintShop();
-  });
-  it.querySelector(".need").addEventListener("click", function(){
-    shopState[id] = shopState[id] === "need" ? null : "need";
-    try{ localStorage.setItem("mp_shop_v1", JSON.stringify(shopState)); }catch(e){}
-    paintShop();
-  });
+  it.querySelector(".have").addEventListener("click", function(){ setShop(id, "have"); });
+  it.querySelector(".need").addEventListener("click", function(){ setShop(id, "need"); });
 });
-document.getElementById("copyBtn").addEventListener("click", function(){
+function copyList(btn){
   var lines = ["Please add the following items to my cart:", ""];
   var n = 0;
   items.forEach(function(it){
@@ -507,9 +507,10 @@ document.getElementById("copyBtn").addEventListener("click", function(){
       lines.push("• " + it.getAttribute("data-name")); n++;
     }
   });
-  if(n === 0){ lines.push("(nothing marked 'Need it' yet — tap Need it on items above)"); }
+  if(n === 0){ lines.push("(your cart is empty — everything is marked 'Have it')"); }
   var text = lines.join("\n");
-  function done(){ var b = document.getElementById("copyBtn"); b.textContent = "Copied ✓"; setTimeout(function(){ b.textContent = "Copy for Albertsons assistant"; }, 1800); }
+  var label = btn.textContent;
+  function done(){ btn.textContent = "Copied ✓"; setTimeout(function(){ btn.textContent = label; }, 1800); }
   function fallback(){
     var ta = document.createElement("textarea");
     ta.value = text; document.body.appendChild(ta); ta.select();
@@ -519,7 +520,47 @@ document.getElementById("copyBtn").addEventListener("click", function(){
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(text).then(done, fallback);
   } else fallback();
-});
+}
+/* floating cart panel (bottom-right), two-way synced with the list above */
+(function(){
+  var fab = document.getElementById("cartFab");
+  if(!fab) return;
+  var btn = document.getElementById("cartBtn"), panel = document.getElementById("cartPanel"),
+      list = document.getElementById("cartItems"), count = document.getElementById("cartCount"),
+      total = document.getElementById("cartTotal");
+  paintCart = function(){
+    var ns = items.filter(function(it){ return shopState[it.getAttribute("data-id")] === "need"; });
+    count.textContent = ns.length;
+    count.style.display = ns.length ? "flex" : "none";
+    total.textContent = ns.length + (ns.length === 1 ? " item on the list" : " items on the list");
+    list.innerHTML = "";
+    items.forEach(function(it){
+      var id = it.getAttribute("data-id"), need = shopState[id] === "need",
+          tipEl = it.querySelector(".tip");
+      var li = document.createElement("li"); if(!need) li.className = "off";
+      var lab = document.createElement("label"),
+          cb = document.createElement("input"),
+          tx = document.createElement("span"); tx.className = "trow";
+      cb.type = "checkbox"; cb.checked = need;
+      cb.setAttribute("aria-label", it.getAttribute("data-name"));
+      cb.addEventListener("change", function(){ setShop(id, cb.checked ? "need" : "have"); });
+      tx.innerHTML = "<b>" + it.getAttribute("data-name") + "</b>" +
+        (tipEl ? "<small>" + tipEl.textContent + "</small>" : "");
+      lab.appendChild(cb); lab.appendChild(tx); li.appendChild(lab);
+      list.appendChild(li);
+    });
+  };
+  function open(){ fab.classList.add("open"); btn.setAttribute("aria-expanded","true"); panel.setAttribute("aria-hidden","false"); }
+  function close(){ fab.classList.remove("open"); btn.setAttribute("aria-expanded","false"); panel.setAttribute("aria-hidden","true"); }
+  btn.addEventListener("click", function(){ fab.classList.contains("open") ? close() : open(); });
+  document.getElementById("cartClose").addEventListener("click", close);
+  document.getElementById("cartCopy").addEventListener("click", function(){ copyList(this); });
+  document.addEventListener("keydown", function(e){ if(e.key === "Escape") close(); });
+  /* old "Shopping List" links now open the mini tab instead of jumping nowhere */
+  document.querySelectorAll('a[href="#shopping"], a[href="index.html#shopping"]').forEach(function(a){
+    a.addEventListener("click", function(e){ e.preventDefault(); open(); });
+  });
+})();
 paintShop();
 /* retractable left nav drawer */
 (function(){

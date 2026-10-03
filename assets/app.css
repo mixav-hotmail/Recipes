@@ -52,6 +52,37 @@
   .drecipes a{display:block; padding:11px 12px; border-radius:12px; text-decoration:none; color:var(--ink); font-weight:600;}
   .drecipes a:hover{background:#f6efe3;}
   .drecipes a.active, .dhome.active{background:var(--accent); color:#fff;}
+  /* floating shopping cart */
+  #cartFab{position:fixed; right:16px; bottom:16px; z-index:65;}
+  #cartBtn{width:56px; height:56px; border-radius:50%; background:var(--ink); color:#fff;
+    font-size:24px; border:0; cursor:pointer; box-shadow:0 4px 16px rgba(35,32,27,.3); position:relative;}
+  #cartCount{position:absolute; top:-4px; right:-4px; background:var(--accent); color:#fff;
+    font-size:12px; font-weight:800; min-width:22px; height:22px; border-radius:11px;
+    display:flex; align-items:center; justify-content:center; padding:0 5px;}
+  #cartPanel{position:absolute; right:0; bottom:68px; width:min(320px,calc(100vw - 32px));
+    max-height:min(60vh,480px); overflow-y:auto; background:var(--card);
+    border:1px solid var(--line); border-radius:16px; box-shadow:0 8px 32px rgba(35,32,27,.25);
+    transform:translateY(8px); opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease;}
+  #cartFab.open #cartPanel{opacity:1; pointer-events:auto; transform:none;}
+  .chead{display:flex; align-items:center; justify-content:space-between; padding:12px 14px;
+    font-weight:800; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--card); z-index:1;}
+  #cartClose{border:0; background:none; font-size:24px; cursor:pointer; color:var(--muted); line-height:1; padding:2px 6px;}
+  #cartItems{list-style:none; margin:0; padding:8px;}
+  #cartItems li label{display:flex; gap:10px; align-items:flex-start; padding:9px 8px;
+    border-radius:10px; cursor:pointer; font-size:14px;}
+  #cartItems li label:hover{background:#f6efe3;}
+  #cartItems input{width:18px; height:18px; accent-color:var(--accent); margin-top:1px; flex:0 0 auto; cursor:pointer;}
+  #cartItems .cempty{padding:16px; text-align:center; color:var(--muted); font-size:14px;}
+  .cfoot{display:flex; flex-direction:column; gap:4px;
+    padding:10px 14px 12px; border-top:1px solid var(--line); position:sticky; bottom:0; background:var(--card);}
+  #cartTotal{font-size:13px; color:var(--muted); font-weight:600;}
+  .cbtns{display:flex; gap:8px; margin-top:6px;}
+  #cartCopy{flex:1; background:var(--accent); color:#fff; border:0; border-radius:10px;
+    padding:10px 12px; font-weight:700; font-size:14px; cursor:pointer;}
+  #cartAlbertsons{flex:1; background:#fff; color:var(--ink); border:1px solid var(--line); border-radius:10px;
+    padding:10px 12px; font-weight:700; font-size:14px; text-align:center; text-decoration:none;}
+  #cartItems li.off label{opacity:.45;}
+  #cartItems .trow small{display:block; color:var(--muted); font-size:12.5px; margin-top:2px; font-weight:400;}
   main{max-width:1400px; margin:0 auto; padding:0 20px;}
   section.recipe{margin-top:40px; scroll-margin-top:80px;}
   /* ---------- recipe head + grid ---------- */

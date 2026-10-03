@@ -22,6 +22,15 @@
   </nav>
 </aside>
 
+<div id="cartFab">
+  <div id="cartPanel" role="dialog" aria-label="Shopping list" aria-hidden="true">
+    <div class="chead"><span>🛒 Shopping list</span><button id="cartClose" aria-label="Close shopping list">×</button></div>
+    <ul id="cartItems"></ul>
+    <div class="cfoot"><span id="cartTotal"></span><div class="cbtns"><button id="cartCopy">Copy for assistant</button><a id="cartAlbertsons" href="https://www.albertsons.com/assistant/" target="_blank" rel="noopener">Open Albertsons →</a></div></div>
+  </div>
+  <button id="cartBtn" aria-label="Open shopping list" aria-expanded="false">🛒<span id="cartCount"></span></button>
+</div>
+
 <div id="stickybar">
   <img id="sbThumb" alt="">
   <div class="sbname" id="sbName"></div>
@@ -58,9 +67,10 @@
   </div>
 </section>
 
-<section id="shopping">
+<!-- data source for the floating cart (#cartFab); the visible shopping UI lives in the mini tab -->
+<section id="shopping" hidden>
   <h2>Shopping List</h2>
-  <p class="sub">Tap <b>Have it</b> for what’s already in your kitchen, or <b>Need it</b> to add it to your Albertsons run. Your picks are saved on this device.</p>
+  <p class="sub">Everything starts on your list — tap <b>Have it</b> for what’s already in your kitchen. Your picks are saved on this device.</p>
 
   <div class="group">
     <h3>Seafood &amp; Meat</h3>
@@ -136,8 +146,6 @@
 
 <div class="shopbar">
   <div class="count" id="shopCount"><b>12</b> items to decide on</div>
-  <button id="copyBtn">Copy for Albertsons assistant</button>
-  <a id="albertsons" href="https://www.albertsons.com/assistant/" target="_blank" rel="noopener">Open Albertsons assistant →</a>
 </div>
 
 <footer>
