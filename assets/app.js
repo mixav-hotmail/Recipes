@@ -521,3 +521,21 @@ document.getElementById("copyBtn").addEventListener("click", function(){
   } else fallback();
 });
 paintShop();
+/* retractable left nav drawer */
+(function(){
+  var btn=document.getElementById("drawerBtn"), drawer=document.getElementById("drawer"),
+      scrim=document.getElementById("scrim"), closeBtn=document.getElementById("drawerClose");
+  if(!btn||!drawer) return;
+  function open(){ drawer.classList.add("open"); scrim.classList.add("show");
+    btn.setAttribute("aria-expanded","true"); drawer.setAttribute("aria-hidden","false"); }
+  function close(){ drawer.classList.remove("open"); scrim.classList.remove("show");
+    btn.setAttribute("aria-expanded","false"); drawer.setAttribute("aria-hidden","true"); }
+  btn.addEventListener("click", function(){ drawer.classList.contains("open")?close():open(); });
+  closeBtn.addEventListener("click", close);
+  scrim.addEventListener("click", close);
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape") close(); });
+  var links=drawer.querySelectorAll("a");
+  links.forEach(function(a){ a.addEventListener("click", close); });
+  var page=location.pathname.split("/").pop()||"index.html";
+  links.forEach(function(a){ if(a.getAttribute("href")===page) a.classList.add("active"); });
+})();

@@ -6,7 +6,21 @@
 <title>Chicken Tikka Bowls — My Cookbook</title>
 <link rel="stylesheet" href="assets/app.css">
 </head>
-<body>
+<body id="top">
+
+<button id="drawerBtn" aria-label="Open menu" aria-expanded="false">☰</button>
+<div id="scrim"></div>
+<aside id="drawer" aria-hidden="true" aria-label="Site navigation">
+  <div class="dhead"><span>My Cookbook</span><button id="drawerClose" aria-label="Close menu">×</button></div>
+  <a class="dhome" href="index.html">⌂ Home</a>
+  <div class="dlabel">Recipes</div>
+  <nav class="drecipes">
+    <a href="tikka.html">🍗 Chicken Tikka Bowls</a>
+    <a href="shrimp.html">🍤 Coconut Shrimp Curry</a>
+    <a href="salmon.html">🐟 Lemon Garlic Salmon</a>
+    <a href="koobideh.html">🥩 Sheet-Pan Koobideh</a>
+  </nav>
+</aside>
 
 <div id="stickybar">
   <img id="sbThumb" alt="">
