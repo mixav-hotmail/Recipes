@@ -174,6 +174,8 @@ tl: { T: 75, lanes: [
 
 - Header ("My Cookbook" + one-line sub), TOC recipe pills (index only —
   subpages have no top nav; the drawer covers navigation).
+- Favicon: 🍲 emoji as an SVG data URI in `<head>` (text-safe — no binary file
+  to push).
 - Retractable left drawer (☰ top-left): ⌂ Home + the 4 recipes, current page
   highlighted. Opens on hover on desktop (no dim; closes on mouse-leave) or
   tap; also closes on ×, scrim tap, link tap, or ESC.
