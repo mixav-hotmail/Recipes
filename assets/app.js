@@ -187,6 +187,14 @@ function shopNeed(id){
   if(PAGE_R !== "index") c = c.filter(function(p){ return p[0] === PAGE_R; });
   return c.some(function(p){ return buyState[p[0] + ":" + p[1]] !== 0; });
 }
+/* keep the recipe 🛒 buttons in sync with the cart (both directions) */
+function paintBuyButtons(){
+  document.querySelectorAll(".buybtn").forEach(function(b){
+    var on = shopNeed(b.getAttribute("data-sid"));
+    b.classList.toggle("on", on);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+}
 
 /* ================= SERVINGS + INGREDIENTS ================= */
 var servState = {};
@@ -202,12 +210,18 @@ function fmtQty(q, count){
   return (whole ? whole : "") + best[1];
 }
 var NO_PLURAL = {"tsp":1, "tbsp":1, "oz":1, "lb":1};
+function pluralUnit(ing, q2){
+  if(Math.abs(q2 - 1) < 1e-9) return ing.u;
+  if(ing.up) return ing.up;
+  if(!ing.u) return "";
+  return NO_PLURAL[ing.u] ? ing.u : ing.u + "s";
+}
 function ingHTML(ing, factor){
   var note = ing.note ? ' <span class="inote">(' + ing.note + ')</span>' : '';
   if(ing.q == null) return "<b>" + ing.n + "</b>" + note;
   var q2 = ing.q * factor;
   var qs = fmtQty(q2, ing.count);
-  var unit = (Math.abs(q2 - 1) < 1e-9) ? ing.u : (ing.up || (NO_PLURAL[ing.u] ? ing.u : ing.u + "s"));
+  var unit = pluralUnit(ing, q2);
   var name = (Math.abs(q2 - 1) < 1e-9) ? ing.n : (ing.np || ing.n);
   var u = unit ? " " + unit : "";
   return '<span class="iqty">' + qs + u + '</span> ' + name + note;
@@ -225,19 +239,22 @@ function renderIngredients(key){
     if(ING_SHOP[id]){
       var b = document.createElement("button");
       b.type = "button";
-      b.className = "buybtn" + (buyState[id] !== 0 ? " on" : "");
+      b.className = "buybtn";
       b.textContent = "🛒";
       b.title = "On/off the shopping list";
+      b.setAttribute("data-sid", ING_SHOP[id][0]);
       b.setAttribute("aria-label", "Toggle " + ing.n + " on the shopping list");
-      b.setAttribute("aria-pressed", buyState[id] !== 0 ? "true" : "false");
       (function(btn, bid){
         btn.addEventListener("click", function(){
-          var on = !btn.classList.contains("on");
-          btn.classList.toggle("on", on);
-          btn.setAttribute("aria-pressed", on ? "true" : "false");
-          buyState[bid] = on ? 1 : 0;
+          var sid = btn.getAttribute("data-sid");
+          if(shopNeed(sid)){
+            buyState[bid] = 0; /* take it off */
+          }else{
+            buyState[bid] = 1; /* put it back on */
+            if(shopState[sid] === "have") shopState[sid] = "need";
+          }
           try{ localStorage.setItem("mp_buy_v1", JSON.stringify(buyState)); }catch(e){}
-          if(paintCart) paintCart();
+          saveShop(); paintBuyButtons(); paintCart();
         });
       })(b, id);
       li.insertBefore(b, li.firstChild);
@@ -546,7 +563,7 @@ items.forEach(function(it){
 });
 var paintCart = null; /* assigned by the cart panel below */
 function saveShop(){ try{ localStorage.setItem("mp_shop_v1", JSON.stringify(shopState)); }catch(e){} }
-function setShop(id, val){ shopState[id] = val; saveShop(); paintShop(); }
+function setShop(id, val){ shopState[id] = val; saveShop(); paintShop(); paintBuyButtons(); }
 /* scaled quantity for a shopping item: the page recipe's share, or the
    consolidated value (scaled by its primary recipe) on the index page */
 function shopQtyOf(it){
@@ -651,6 +668,7 @@ function copyList(btn){
   });
 })();
 paintShop();
+paintBuyButtons();
 /* retractable left nav drawer */
 (function(){
   var btn=document.getElementById("drawerBtn"), drawer=document.getElementById("drawer"),
