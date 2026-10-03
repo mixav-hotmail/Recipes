@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%B2%3C/text%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chicken Coconut Curry — My Cookbook</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body id="top">
+
+<button id="drawerBtn" aria-label="Open menu" aria-expanded="false">☰</button>
+<div id="scrim"></div>
+<aside id="drawer" aria-hidden="true" aria-label="Site navigation">
+  <div class="dhead"><span>My Cookbook</span><button id="drawerClose" aria-label="Close menu">×</button></div>
+  <a class="dhome" href="index.html">⌂ Home</a>
+  <div class="dlabel">Recipes</div>
+  <nav class="drecipes">
+    <a href="tikka.html">🍗 Chicken Tikka Bowls</a>
+    <a href="shrimp.html">🍤 Coconut Shrimp Curry</a>
+    <a href="salmon.html">🐟 Lemon Garlic Salmon</a>
+    <a href="koobideh.html">🥩 Sheet-Pan Koobideh</a>
+    <a href="cordon.html">🧀 Chicken Cordon Bleu</a>
+    <a href="thighs.html">🍗 Roast Chicken Thighs</a>
+    <a href="croque.html">🥪 Turkey Croque Monsieur</a>
+    <a href="coco.html">🍛 Chicken Coconut Curry</a>
+  </nav>
+</aside>
+
+<div id="cartFab">
+  <div id="cartPanel" role="dialog" aria-label="Shopping list" aria-hidden="true">
+    <div class="chead"><span>🛒 Shopping list</span><button id="cartClose" aria-label="Close shopping list">×</button></div>
+    <ul id="cartItems"></ul>
+    <div class="cfoot"><span id="cartTotal"></span><div class="cbtns"><button id="cartCopy">Copy for assistant</button><a id="cartAlbertsons" href="https://www.albertsons.com/assistant/" target="_blank" rel="noopener">Open Albertsons →</a></div></div>
+  </div>
+  <button id="cartBtn" aria-label="Open shopping list" aria-expanded="false">🛒<span id="cartCount"></span></button>
+</div>
+
+<div id="stickybar">
+  <img id="sbThumb" alt="">
+  <div class="sbname" id="sbName"></div>
+  <div class="stepper" id="sbStepper">
+    <button id="sbMinus" aria-label="Fewer servings">−</button><span class="sval" id="sbServ"></span><button id="sbPlus" aria-label="More servings">+</button><em>servings</em>
+  </div>
+</div>
+
+<header>
+  <h1>Chicken Coconut Curry</h1>
+  <p>A running collection of easy recipes. Scale servings, tap through the steps, and cook along with the timing chart.</p>
+</header>
+
+
+
+<main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="recipe" id="coco" data-r="coco">
+  <div class="rhead">
+    <div><h2>Chicken Coconut Curry</h2>
+      <div class="meta"><span>⏱ <b>25 min</b></span><span>🍽 <b>2</b> servings</span><span>🌶 Mild &amp; creamy</span></div></div>
+    <div class="stepper" data-r="coco"><button class="sminus" aria-label="Fewer servings">−</button><span class="sval"></span><button class="splus" aria-label="More servings">+</button><em>servings</em></div>
+  </div>
+  <div class="rgrid">
+    <div class="c-ing"><img class="hero" data-img="coco_curry" src="" alt="Chicken coconut curry over rice">
+      <div class="ingredients"><h3>Ingredients · 🛒 on shopping list</h3><ul data-ingr="coco"></ul></div></div>
+    <div class="c-play"><div class="uplayer" data-player="coco"></div></div>
+  </div>
+</section>
+
+<!-- data source for the floating cart (#cartFab); the visible shopping UI lives in the mini tab -->
+<section id="shopping" hidden>
+  <h2>Shopping List</h2>
+  <p class="sub">Everything starts on your list — tap <b>Have it</b> for what’s already in your kitchen. Your picks are saved on this device.</p>
+
+  <div class="group">
+    <h3>Seafood &amp; Meat</h3>
+    <div class="item" data-id="s1" data-rs="shrimp" data-r="shrimp" data-name="Frozen shrimp">
+      <div class="row1"><span class="name">Frozen shrimp</span><span class="qty">12 oz</span></div>
+      <div class="tip">A 1 lb bag works too — just freeze the extra. Thaw in the fridge the night before.</div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s2" data-rs="salmon" data-r="salmon" data-name="Salmon fillets" data-note="2 fillets">
+      <div class="row1"><span class="name">Salmon fillets</span><span class="qty">¾ lb (2 fillets)</span></div>
+      <div class="tip">Buy frozen — freeze on arrival, move to the fridge the night before cooking.</div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s3" data-rs="tikka,cordon,coco" data-r="tikka" data-name="Chicken breast" data-note="~4 large">
+      <div class="row1"><span class="name">Chicken breast</span><span class="qty">3 lb (~4 large)</span></div>
+      <div class="tip">Slice into strips or pound to even thickness so it cooks uniformly under the broiler.</div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s4" data-rs="koobideh" data-r="koobideh" data-name="Ground beef (80/20)">
+      <div class="row1"><span class="name">Ground beef</span><span class="qty">¾ lb · 80/20</span></div>
+      <div class="tip">Freeze on arrival, move to the fridge the night before cooking.</div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s13" data-rs="thighs" data-r="thighs" data-name="Chicken thighs" data-note="bone-in">
+      <div class="row1"><span class="name">Chicken thighs</span><span class="qty">1¼ lb</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s14" data-rs="cordon,croque" data-r="cordon" data-name="Turkey slices" data-note="deli">
+      <div class="row1"><span class="name">Turkey slices</span><span class="qty">8 slices</span></div>
+      <div class="tip">Cordon bleu + croques — 4 slices each.</div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+  </div>
+
+  <div class="group">
+    <h3>Produce</h3>
+    <div class="item" data-id="s5" data-rs="shrimp,koobideh,coco" data-r="shrimp" data-name="Yellow onions">
+      <div class="row1"><span class="name">Yellow onions</span><span class="qty">× 2</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s6" data-rs="tikka,shrimp,salmon,thighs,coco" data-r="tikka" data-name="Garlic">
+      <div class="row1"><span class="name">Garlic</span><span class="qty">1 head</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s7" data-rs="shrimp,coco" data-r="shrimp" data-name="Fresh ginger">
+      <div class="row1"><span class="name">Fresh ginger</span><span class="qty">small piece</span></div>
+      <div class="tip">Optional — ground ginger from your spice rack works fine.</div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s8" data-rs="tikka,salmon" data-r="salmon" data-name="Lemons">
+      <div class="row1"><span class="name">Lemons</span><span class="qty">× 2</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s9" data-rs="koobideh" data-r="koobideh" data-name="Tomato">
+      <div class="row1"><span class="name">Tomatoes</span><span class="qty">× 1</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s17" data-rs="cordon,thighs" data-r="cordon" data-name="Potatoes">
+      <div class="row1"><span class="name">Potatoes</span><span class="qty">2 lb</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s22" data-rs="croque" data-r="croque" data-name="Salad greens">
+      <div class="row1"><span class="name">Salad greens</span><span class="qty">2 handfuls</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+  </div>
+
+  <div class="group">
+    <h3>Dairy &amp; Pantry</h3>
+    <div class="item" data-id="s10" data-rs="shrimp,coco" data-r="shrimp" data-name="Coconut milk" data-note="13.5 oz">
+      <div class="row1"><span class="name">Coconut milk</span><span class="qty">1 can · 13.5 oz</span></div>
+      <div class="tip">One can per curry — you'll use about half per recipe; the rest keeps 4 days in the fridge.</div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s11" data-rs="shrimp" data-r="shrimp" data-name="Tomato paste">
+      <div class="row1"><span class="name">Tomato paste</span><span class="qty">1 small can</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s12" data-rs="tikka" data-r="tikka" data-name="Plain yogurt" data-note="32 oz">
+      <div class="row1"><span class="name">Plain yogurt</span><span class="qty">1 large tub · 32 oz</span></div>
+      <div class="tip">For the tikka marinade — you'll use about 1⅓ cups. Whole milk yogurt = best char.</div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s15" data-rs="cordon,croque" data-r="cordon" data-name="Gruyère" data-note="sliced or a small block">
+      <div class="row1"><span class="name">Gruyère</span><span class="qty">8 oz</span></div>
+      <div class="tip">Slices for the cordon bleu, grated for the croques.</div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s16" data-rs="croque" data-r="croque" data-name="Sandwich bread" data-note="pain de mie">
+      <div class="row1"><span class="name">Sandwich bread</span><span class="qty">4 slices</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s18" data-rs="cordon" data-r="cordon" data-name="Panko breadcrumbs">
+      <div class="row1"><span class="name">Panko breadcrumbs</span><span class="qty">½ cup</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s19" data-rs="cordon" data-r="cordon" data-name="Eggs" data-note="for the breading">
+      <div class="row1"><span class="name">Eggs</span><span class="qty">× 2</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s20" data-rs="croque" data-r="croque" data-name="Milk" data-note="for the béchamel">
+      <div class="row1"><span class="name">Milk</span><span class="qty">1 cup</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+    <div class="item" data-id="s21" data-rs="croque" data-r="croque" data-name="Flour" data-note="for the béchamel">
+      <div class="row1"><span class="name">Flour</span><span class="qty">2 tbsp</span></div>
+      <div class="pick"><button class="have">Have it</button><button class="need">Need it</button></div>
+    </div>
+
+  </div>
+
+  <div class="onhand"><b>Assumed on hand</b> (you said you’re stocked): rice, oil, butter, salt, pepper, turmeric, cumin, coriander, paprika, curry powder, garam masala.</div>
+</section>
+
+</main>
+
+<div class="shopbar">
+  <div class="count" id="shopCount"><b>12</b> items to decide on</div>
+</div>
+
+<footer>
+  <p>A running cookbook — new tried-and-rated recipes land here. Dots sit at their real minute marks; tap one to jump there. The dashed zone on each lane is prep.</p>
+</footer>
+
+<script src="assets/img-data/shrimp_curry.js"></script><script src="assets/img-data/lemon_salmon.js"></script><script src="assets/img-data/chicken_tikka.js"></script><script src="assets/img-data/koobideh.js"></script><script src="assets/img-data/shrimp_steps.js"></script><script src="assets/img-data/salmon_steps.js"></script><script src="assets/img-data/chelow.js"></script><script src="assets/img-data/shrimp_prep.js"></script><script src="assets/img-data/salmon_prep.js"></script><script src="assets/img-data/cordon_bleu.js"></script><script src="assets/img-data/cordon_prep.js"></script><script src="assets/img-data/cordon_steps.js"></script><script src="assets/img-data/croque.js"></script><script src="assets/img-data/croque_prep.js"></script><script src="assets/img-data/croque_steps.js"></script><script src="assets/img-data/thighs.js"></script><script src="assets/img-data/thighs_prep.js"></script><script src="assets/img-data/thighs_steps.js"></script><script src="assets/img-data/coco_curry.js"></script><script src="assets/img-data/coco_prep.js"></script><script src="assets/img-data/coco_steps.js"></script><script src="assets/app.js"></script>
+</body>
+</html>
