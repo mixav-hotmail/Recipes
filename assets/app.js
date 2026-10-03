@@ -500,7 +500,7 @@ items.forEach(function(it){
   });
 });
 document.getElementById("copyBtn").addEventListener("click", function(){
-  var lines = ["Albertsons list", ""];
+  var lines = ["Please add the following items to my cart:", ""];
   var n = 0;
   items.forEach(function(it){
     if(shopState[it.getAttribute("data-id")] === "need"){
@@ -509,7 +509,7 @@ document.getElementById("copyBtn").addEventListener("click", function(){
   });
   if(n === 0){ lines.push("(nothing marked 'Need it' yet — tap Need it on items above)"); }
   var text = lines.join("\n");
-  function done(){ var b = document.getElementById("copyBtn"); b.textContent = "Copied ✓"; setTimeout(function(){ b.textContent = "Copy Albertsons list"; }, 1800); }
+  function done(){ var b = document.getElementById("copyBtn"); b.textContent = "Copied ✓"; setTimeout(function(){ b.textContent = "Copy for Albertsons assistant"; }, 1800); }
   function fallback(){
     var ta = document.createElement("textarea");
     ta.value = text; document.body.appendChild(ta); ta.select();
