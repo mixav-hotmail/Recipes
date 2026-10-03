@@ -152,6 +152,22 @@ var SHOP_MAP = {
   s7:[["shrimp",3]], s8:[["tikka",2],["salmon",1]], s9:[["koobideh",5]],
   s10:[["shrimp",4]], s11:[["shrimp",5]], s12:[["tikka",1]]
 };
+/* per-page shopping quantities: [qty, unit, plural, count?] at the recipe's base servings.
+   "index" = the consolidated weekly-list value shown on the home page. */
+var SHOP_QTY = {
+  s1:  { index:[12,"oz"],                    shrimp:[12,"oz"] },
+  s2:  { index:[0.75,"lb"],                 salmon:[0.75,"lb"] },
+  s3:  { index:[3,"lb"],                    tikka:[3,"lb"] },
+  s4:  { index:[0.75,"lb"],                 koobideh:[0.75,"lb"] },
+  s5:  { index:[2,"","",1],                 shrimp:[1,"","",1], koobideh:[1,"","",1] },
+  s6:  { index:[1,"head","heads"],          tikka:[1,"head","heads"], shrimp:[2,"clove","cloves"], salmon:[3,"clove","cloves"] },
+  s7:  { index:[1,"small piece","small pieces"], shrimp:[1,"small piece","small pieces"] },
+  s8:  { index:[2,"","",1],                 tikka:[1,"","",1], salmon:[1,"","",1] },
+  s9:  { index:[1,"","",1],                 koobideh:[1,"","",1] },
+  s10: { index:[1,"can","cans"],            shrimp:[1,"can","cans"] },
+  s11: { index:[1,"small can","small cans"], shrimp:[1,"small can","small cans"] },
+  s12: { index:[1,"large tub","large tubs"], tikka:[1,"large tub","large tubs"] }
+};
 var buyState = {};
 try{ buyState = JSON.parse(localStorage.getItem("mp_buy_v1") || "{}"); }catch(e){}
 var ING_SHOP = {};
@@ -513,6 +529,15 @@ window.addEventListener("scroll", function(){
 var shopState = {};
 try{ shopState = JSON.parse(localStorage.getItem("mp_shop_v1") || "{}"); }catch(e){}
 var items = Array.prototype.slice.call(document.querySelectorAll(".item"));
+/* per-page carts: a recipe page only lists its own ingredients; index lists all */
+var PAGE_R = (function(){
+  var secs = document.querySelectorAll("section.recipe");
+  return secs.length === 1 ? secs[0].getAttribute("data-r") : "index";
+})();
+items = items.filter(function(it){
+  if(PAGE_R === "index") return true;
+  return (it.getAttribute("data-rs") || "").split(",").indexOf(PAGE_R) >= 0;
+});
 /* everything starts on the list; normalize old/neutral saved states */
 items.forEach(function(it){
   var id = it.getAttribute("data-id");
@@ -521,12 +546,16 @@ items.forEach(function(it){
 var paintCart = null; /* assigned by the cart panel below */
 function saveShop(){ try{ localStorage.setItem("mp_shop_v1", JSON.stringify(shopState)); }catch(e){} }
 function setShop(id, val){ shopState[id] = val; saveShop(); paintShop(); }
-/* scaled quantity for a shopping item from its recipe's servings */
+/* scaled quantity for a shopping item: the page recipe's share, or the
+   consolidated value (scaled by its primary recipe) on the index page */
 function shopQtyOf(it){
-  var r = it.getAttribute("data-r"), q = parseFloat(it.getAttribute("data-q")),
-      f = servingsOf(r) / RECIPES[r].baseServ, q2 = q * f,
-      cnt = it.getAttribute("data-count") === "1",
-      u = it.getAttribute("data-u") || "", up = it.getAttribute("data-up") || u,
+  var id = it.getAttribute("data-id"), spec = SHOP_QTY[id],
+      key = (PAGE_R !== "index" && spec[PAGE_R]) ? PAGE_R : "index",
+      e = spec[key],
+      rkey = (key === "index") ? it.getAttribute("data-r") : key,
+      f = servingsOf(rkey) / RECIPES[rkey].baseServ,
+      q2 = e[0] * f, cnt = e[3] === 1,
+      u = e[1] || "", up = e[2] || u,
       unit = (q2 < 1 + 1e-9) ? u : up;
   return { t: fmtQty(q2, cnt), unit: unit };
 }
